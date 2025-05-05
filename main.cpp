@@ -38,6 +38,39 @@ void processInput(GLFWwindow* window)
         glfwSetWindowShouldClose(window, true);
 }
 
+int initGLFW(GLFWwindow** window) {
+    /* Initialize the GLFW library */
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW" << std::endl;
+        return -1;
+    }
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Disables functionality that is deprecated in older OpenGL
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    /* Create a windowed mode window and its OpenGL context */
+    *window = glfwCreateWindow(1000, 1000, "TEST WINDOW", NULL, NULL); //width, height, title, monitor, shared context
+    if (!window)
+    {
+        glfwTerminate();
+        std::cerr << "Failed to create GLFW window" << std::endl;
+        return -1;
+    }
+
+    /* Make the window's context current */
+    glfwMakeContextCurrent(*window);
+    glfwSetFramebufferSizeCallback(*window, framebuffer_size_callback); // TODO not sure where this goes.
+
+    /* Initialize GLAD */
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+    return 0;
+}
+
 void setupShaders(GLuint& shaderProgram) {
     std::string vertexShaderStr = loadShaderSource("vertex.glsl");
     std::string fragmentShaderStr = loadShaderSource("fragment.glsl");
@@ -88,39 +121,10 @@ void setupShaders(GLuint& shaderProgram) {
     glDeleteShader(fragmentShader);
 }
 
-int main2(void)
+int main(void)
 {
     GLFWwindow* window;
-
-    /* Initialize the GLFW library */
-    if (!glfwInit()) {
-        std::cerr << "Failed to initialize GLFW" << std::endl;
-        return -1;
-    }
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // Disables functionality that is deprecated in older OpenGL
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    /* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(1000, 1000, "TEST WINDOW", NULL, NULL); //width, height, title, monitor, shared context
-    if (!window)
-    {
-        glfwTerminate();
-		std::cerr << "Failed to create GLFW window" << std::endl;
-        return -1;
-    }
-
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); // TODO not sure where this goes.
-
-	/* Initialize GLAD */ 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cerr << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
+    initGLFW(&window);
 
     // To check version of OpenGL that the context created. (current 4.6)
     // std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
@@ -181,9 +185,7 @@ int main2(void)
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &EBO); // num of buffers, var to store buffer id GLUint
     glGenBuffers(1, &VBO); // num of buffers, var to store buffer id GLUint
-
     glBindVertexArray(VAO);
-
 
     // Create a vertex buffer object (VBO) and element array buffer object (EBO) and copy the vertex data to it
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO); // GL_ARRAY_BUFFER is the vertex buffer object. any buffer calls to GL_ARRAY_BUFFER will go to our VBO object
@@ -250,8 +252,8 @@ int main2(void)
     return 0;
 }
 
-int main(void) {
-    //WFC();
-    main2();
-    // read level from text
-}
+//int main(void) {
+//    //WFC();
+//    main2();
+//    // read level from text
+//}
