@@ -8,6 +8,13 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+const char* imagePaths[5] = {
+    "trackTiles/blank.png",
+    "trackTiles/down.png",
+    "trackTiles/left.png",
+    "trackTiles/right.png",
+    "trackTiles/up.png"
+};
 
 std::string loadShaderSource(const std::string& filePath) {
     std::ifstream file(filePath);
@@ -125,31 +132,33 @@ int main2(void)
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /* Load and create a texture */
-    GLuint texture;
-    glGenTextures(1, &texture); // number of textures to generate, pointer to the texture ID    
-    glBindTexture(GL_TEXTURE_2D, texture); // Bind the texture object to the target GL_TEXTURE_2D
+    //GLuint texture;
+    GLuint tileTextures[5]; // number of textures to generate, pointer to the texture ID   
+    glGenTextures(5, tileTextures);
+    for (int i = 0; i < 5; i++) {
+        glBindTexture(GL_TEXTURE_2D, tileTextures[i]); // Bind the texture object to the target GL_TEXTURE_2D to do other stuff with
+        
+        // Set texture filtering/wrapping options
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    // Set texture filtering/wrapping options
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // Load image data
-    int width, height, nrChannels;
-    unsigned char* data = stbi_load("trackTiles/down.png", &width, &height, &nrChannels, 0);
-    if (data)
-    {
-        GLenum format = (nrChannels == 4) ? GL_RGBA : GL_RGB;
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
+        // Load image data
+        int width, height, nrChannels;
+        unsigned char* data = stbi_load(imagePaths[i], &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            GLenum format = (nrChannels == 4) ? GL_RGBA : GL_RGB;
+            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
+        else
+        {
+            std::cerr << "Failed to load texture" << std::endl;
+        }
+        stbi_image_free(data);
     }
-    else
-    {
-        std::cerr << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
-    glUseProgram(shaderProgram);
     glUniform1i(glGetUniformLocation(shaderProgram, "uTexture"), 0); // use texture unit 0
 
     //////////////////////
@@ -219,7 +228,8 @@ int main2(void)
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // Draw the triangle using the vertex data in the EBO. GL_TRIANGLES is the primitive type, 6 is the number of indices to draw, GL_UNSIGNED_INT is the type of the indices, 0 is the offset in the EBO
 
         glUseProgram(shaderProgram);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        //glBindTexture(GL_TEXTURE_2D, texture);
+        glBindTexture(GL_TEXTURE_2D, tileTextures[2]);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
