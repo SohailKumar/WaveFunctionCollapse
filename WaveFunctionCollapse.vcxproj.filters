@@ -21,9 +21,24 @@
     <ClCompile Include="glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PreProcess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WFC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PreProcess.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WFC.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -31,5 +46,30 @@
     <ResourceCompile Include="WaveFunctionCollapse.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vertex.glsl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="fragment.glsl">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="trackTiles\blank.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="trackTiles\down.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="trackTiles\left.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="trackTiles\right.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="trackTiles\up.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

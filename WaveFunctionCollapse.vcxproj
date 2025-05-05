@@ -137,12 +137,28 @@
   <ItemGroup>
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PreProcess.cpp" />
+    <ClCompile Include="WFC.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PreProcess.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="WFC.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WaveFunctionCollapse.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fragment.glsl" />
+    <None Include="vertex.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="trackTiles\blank.png" />
+    <Image Include="trackTiles\down.png" />
+    <Image Include="trackTiles\left.png" />
+    <Image Include="trackTiles\right.png" />
+    <Image Include="trackTiles\up.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
