@@ -13,6 +13,19 @@
 
 bool paused;
 bool spacePressedLastFrame = false;
+const int gridWidth = 5;
+const int gridHeight = 5;
+int outputWFC[gridWidth][gridHeight];
+
+void newWFC() {
+    for (int y = 0; y < gridHeight; ++y) {
+        for (int x = 0; x < gridWidth; ++x) {
+            int tileIndex = rand() % 5; // pick a texture index randomly
+            outputWFC[x][y] = tileIndex;
+        }
+    }
+}
+
 
 const char* imagePaths[5] = {
     "trackTiles/blank.png",
@@ -46,7 +59,8 @@ void processInput(GLFWwindow* window)
     bool spacePressedThisFrame = glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS;
 
     if (spacePressedThisFrame && !spacePressedLastFrame) {
-        paused = !paused;  // Toggle only on "key down"
+        //paused = !paused;  // Toggle only on "key down"
+        newWFC();
     }
 
     spacePressedLastFrame = spacePressedThisFrame; // Update for next frame
@@ -225,8 +239,6 @@ int main(void)
     // Set to wireframe mode
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-
-
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -252,13 +264,11 @@ int main(void)
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // Draw the triangle using the vertex data in the EBO. GL_TRIANGLES is the primitive type, 6 is the number of indices to draw, GL_UNSIGNED_INT is the type of the indices, 0 is the offset in the EBO
 
         glm::mat4 projection = glm::ortho(0.0f, 1000.0f, 0.0f, 1000.0f, -1.0f, 1.0f);
-        int gridWidth = 5;
-        int gridHeight = 5;
         int tileSize = 160;
 
         for (int y = 0; y < gridHeight; ++y) {
             for (int x = 0; x < gridWidth; ++x) {
-                int tileIndex = rand() % 5; // pick a texture index randomly
+                int tileIndex = outputWFC[x][y]; // pick a texture index randomly
 
                 // Create transform matrix
                 glm::mat4 model = glm::mat4(1.0f);
