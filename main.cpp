@@ -1,5 +1,8 @@
-#include "GLAD/glad.h"
-#include "GLFW/glfw3.h"
+#include <GLAD/glad.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -7,6 +10,9 @@
 #include "WFC.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+
+bool paused;
+bool spacePressedLastFrame = false;
 
 const char* imagePaths[5] = {
     "trackTiles/blank.png",
@@ -36,6 +42,14 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    bool spacePressedThisFrame = glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS;
+
+    if (spacePressedThisFrame && !spacePressedLastFrame) {
+        paused = !paused;  // Toggle only on "key down"
+    }
+
+    spacePressedLastFrame = spacePressedThisFrame; // Update for next frame
 }
 
 int initGLFW(GLFWwindow** window) {
@@ -219,8 +233,16 @@ int main(void)
         /* Input */
         processInput(window);
 
+        /* Poll for and process events */
+        glfwPollEvents();
+
+        //Paused
+        if (paused == true) {
+            continue;
+        }
+
         /* Render here */
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.301f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         /* Draw Triangle */
@@ -229,11 +251,39 @@ int main(void)
   //      //glDrawArrays(GL_TRIANGLES, 0, 3); // Draw the triangle using the vertex data in the VBO. GL_TRIANGLES is the primitive type, 0 is the starting index in the VBO, 3 is the number of vertices to draw
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // Draw the triangle using the vertex data in the EBO. GL_TRIANGLES is the primitive type, 6 is the number of indices to draw, GL_UNSIGNED_INT is the type of the indices, 0 is the offset in the EBO
 
+        glm::mat4 projection = glm::ortho(0.0f, 1000.0f, 0.0f, 1000.0f, -1.0f, 1.0f);
+        int gridWidth = 5;
+        int gridHeight = 5;
+        int tileSize = 160;
+
+        for (int y = 0; y < gridHeight; ++y) {
+            for (int x = 0; x < gridWidth; ++x) {
+                int tileIndex = rand() % 5; // pick a texture index randomly
+
+                // Create transform matrix
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::translate(model, glm::vec3(100, 100, 0));
+                model = glm::translate(model, glm::vec3(x * tileSize * 1.05, y * tileSize *1.05, 0.0f));
+                model = glm::scale(model, glm::vec3(tileSize, tileSize, 1.0f));
+                glm::mat4 transform = projection * model;
+
+                // Pass transform to shader
+                GLuint transformLoc = glGetUniformLocation(shaderProgram, "uTransform");
+                glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+                // Bind texture and draw
+                glBindTexture(GL_TEXTURE_2D, tileTextures[tileIndex]);
+                glBindVertexArray(VAO);
+                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            }
+        }
+
+
         glUseProgram(shaderProgram);
-        //glBindTexture(GL_TEXTURE_2D, texture);
-        glBindTexture(GL_TEXTURE_2D, tileTextures[2]);
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        ////glBindTexture(GL_TEXTURE_2D, texture);
+        //glBindTexture(GL_TEXTURE_2D, tileTextures[2]);
+        //glBindVertexArray(VAO);
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
