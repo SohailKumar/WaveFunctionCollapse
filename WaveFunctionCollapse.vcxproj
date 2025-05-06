@@ -145,6 +145,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="WFC.h" />
+    <ClInclude Include="WFCUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WaveFunctionCollapse.rc" />

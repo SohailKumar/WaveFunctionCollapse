@@ -13,19 +13,34 @@
 
 bool paused;
 bool spacePressedLastFrame = false;
-const int gridWidth = 5;
-const int gridHeight = 5;
-int outputWFC[gridWidth][gridHeight];
+const int gridWidth = 10;
+const int gridHeight = 10;
+const int tileSize = 80;
+std::vector<std::vector<Tiles>> outputWFC;
+std::unique_ptr<WFC> wfc;
 
-void newWFC() {
-    for (int y = 0; y < gridHeight; ++y) {
-        for (int x = 0; x < gridWidth; ++x) {
-            int tileIndex = rand() % 5; // pick a texture index randomly
-            outputWFC[x][y] = tileIndex;
-        }
-    }
+void randomWFC() {
+    //for (int y = 0; y < gridHeight; ++y) {
+    //    for (int x = 0; x < gridWidth; ++x) {
+    //        int tileIndex = rand() % 5; // pick a texture index randomly
+    //        outputWFC[x][y] = static_cast<Tiles>(tileIndex);
+    //    }
+    //}
+    wfc->Collapse(outputWFC);
+
+	//std::cout << "Output WFC:" << std::endl;
+ //   for (int y = 0; y < gridHeight; ++y) {
+ //       for (int x = 0; x < gridWidth; ++x) {
+ //           std::cout << static_cast<int>(outputWFC[y][x]) << " ";
+ //       }
+ //       std::cout << std::endl;
+ //   }
 }
-
+void newWFC() {
+    // Initialize the outputWFC grid with random values
+    outputWFC.resize(gridWidth, std::vector<Tiles>(gridHeight));
+    randomWFC();
+}
 
 const char* imagePaths[5] = {
     "trackTiles/blank.png",
@@ -60,7 +75,7 @@ void processInput(GLFWwindow* window)
 
     if (spacePressedThisFrame && !spacePressedLastFrame) {
         //paused = !paused;  // Toggle only on "key down"
-        newWFC();
+        randomWFC();
     }
 
     spacePressedLastFrame = spacePressedThisFrame; // Update for next frame
@@ -151,6 +166,9 @@ void setupShaders(GLuint& shaderProgram) {
 
 int main(void)
 {
+	//srand(static_cast<unsigned>(time(nullptr))); // Seed the random number generator
+    srand(1);
+
     GLFWwindow* window;
     initGLFW(&window);
 
@@ -191,7 +209,7 @@ int main(void)
         }
         stbi_image_free(data);
     }
-    glUniform1i(glGetUniformLocation(shaderProgram, "uTexture"), 0); // use texture unit 0
+
 
     //////////////////////
     /// Set up vertex data and buffers and configure vertex attributes
@@ -239,6 +257,10 @@ int main(void)
     // Set to wireframe mode
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+
+    wfc = std::make_unique<WFC>(gridWidth, gridHeight);
+    newWFC();
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -254,7 +276,7 @@ int main(void)
         }
 
         /* Render here */
-        glClearColor(0.301f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.2f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         /* Draw Triangle */
@@ -264,16 +286,16 @@ int main(void)
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // Draw the triangle using the vertex data in the EBO. GL_TRIANGLES is the primitive type, 6 is the number of indices to draw, GL_UNSIGNED_INT is the type of the indices, 0 is the offset in the EBO
 
         glm::mat4 projection = glm::ortho(0.0f, 1000.0f, 0.0f, 1000.0f, -1.0f, 1.0f);
-        int tileSize = 160;
 
         for (int y = 0; y < gridHeight; ++y) {
             for (int x = 0; x < gridWidth; ++x) {
-                int tileIndex = outputWFC[x][y]; // pick a texture index randomly
+                int flippedY = gridHeight - 1 - y;
+                int tileIndex = static_cast<int>(outputWFC[y][x]); // pick a texture index randomly
 
                 // Create transform matrix
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(100, 100, 0));
-                model = glm::translate(model, glm::vec3(x * tileSize * 1.05, y * tileSize *1.05, 0.0f));
+                model = glm::translate(model, glm::vec3(x * tileSize * 1.05, flippedY * tileSize *1.05, 0.0f));
                 model = glm::scale(model, glm::vec3(tileSize, tileSize, 1.0f));
                 glm::mat4 transform = projection * model;
 
@@ -290,6 +312,7 @@ int main(void)
 
 
         glUseProgram(shaderProgram);
+        glUniform1i(glGetUniformLocation(shaderProgram, "uTexture"), 0); // use texture unit 0
         ////glBindTexture(GL_TEXTURE_2D, texture);
         //glBindTexture(GL_TEXTURE_2D, tileTextures[2]);
         //glBindVertexArray(VAO);
