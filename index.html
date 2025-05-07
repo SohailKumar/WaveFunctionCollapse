@@ -48,6 +48,21 @@
             border: 1px solid #ccc;
             border-radius: 8px;
         }
+
+        .tile-gallery {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+            .tile-gallery img {
+                width: 100px;
+                height: 100px;
+                object-fit: contain;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
     </style>
 </head>
 <body>
@@ -68,16 +83,26 @@
         <h2>How It Works</h2>
         <p>The WFC algorithm works by choosing a tile for a given position based on neighboring constraints. After each selection, the wave function (possible tiles) for adjacent cells is collapsed, propagating constraints until the entire grid is filled or a contradiction is found.</p>
 
+        <p>Below are the five tiles used in this project. Each tile includes sections of train tracks, and the algorithm enforces adjacency rules to ensure track continuity:</p>
+        <div class="tile-gallery">
+            <img src="trackTiles/blank.png" alt="Blank Tile">
+            <img src="trackTiles/down.png" alt="Down Tile">
+            <img src="trackTiles/left.png" alt="Left Tile">
+            <img src="trackTiles/right.png" alt="Right Tile">
+            <img src="trackTiles/up.png" alt="Up Tile">
+        </div>
+
         <h2>Applications</h2>
         <p>This technique is useful in a wide range of procedural generation contexts, such as:</p>
         <ul>
             <li>Game level/world generation (eg. Super Mario Bros WFC, Townscaper by Oskar Stålberg</li>
             <li>Texture synthesis</li>
             <li>Map creation for simulations and virtual environments</li>
+            <li>Creative tools for artists and designers</li>
         </ul>
 
         <h2>Demo</h2>
-        <p>Below are two demonstrations of the program:</p>
+        <p>Below are two demonstrations of the algorithm:</p>
         <ul>
             <li><strong>Step-by-step visualization</strong> of how WFC collapses a grid cell by cell:</li>
             <img src="slow_demo.gif" alt="Slow WFC demo" class="demo-gif">
