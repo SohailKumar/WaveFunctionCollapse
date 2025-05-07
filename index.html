@@ -31,14 +31,6 @@
             border-radius: 4px;
         }
 
-        pre {
-            background-color: #272822;
-            color: #f8f8f2;
-            padding: 1rem;
-            overflow-x: auto;
-            border-radius: 4px;
-        }
-
         a {
             color: #007acc;
             text-decoration: none;
@@ -47,6 +39,15 @@
             a:hover {
                 text-decoration: underline;
             }
+
+        .demo-gif {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            margin: 1rem 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -54,14 +55,6 @@
         <h1>Wave Function Collapse - C++ & OpenGL Implementation</h1>
 
         <p>This project is a graphical implementation of the <strong>Wave Function Collapse</strong> (WFC) algorithm using <strong>C++</strong> for logic and <strong>OpenGL</strong> (via <code>GLFW</code> and <code>GLAD</code>) for rendering. The rendering pipeline also utilizes <code>stb_image</code> for texture loading.</p>
-
-        <h2>Features</h2>
-        <ul>
-            <li>Efficient tile-based procedural generation using WFC.</li>
-            <li>Interactive OpenGL rendering using modern OpenGL (3.3+).</li>
-            <li>Support for image-based input constraints.</li>
-            <li>Real-time visualization and debugging overlays.</li>
-        </ul>
 
         <h2>Technologies Used</h2>
         <ul>
@@ -72,22 +65,30 @@
             <li><code>stb_image</code> - Texture loading from image files.</li>
         </ul>
 
-        <h2>Sample Code Snippet</h2>
-        <pre><code>// Sample tile collapse logic
-void collapse(TileGrid& grid, int x, int y) {
-    auto& cell = grid[x][y];
-    if (!cell.collapsed) {
-        cell.selectRandomTile();
-        cell.collapsed = true;
-    }
-}</code></pre>
-
         <h2>How It Works</h2>
         <p>The WFC algorithm works by choosing a tile for a given position based on neighboring constraints. After each selection, the wave function (possible tiles) for adjacent cells is collapsed, propagating constraints until the entire grid is filled or a contradiction is found.</p>
 
-        <h2>Demo & Source Code</h2>
-        <p>You can view the full source code and demo here:</p>
-        <p><a href="#">GitHub Repository (Link to be added)</a></p>
+        <h2>Applications</h2>
+        <p>This technique is useful in a wide range of procedural generation contexts, such as:</p>
+        <ul>
+            <li>Game level/world generation (eg. Super Mario Bros WFC, Townscaper by Oskar Stålberg</li>
+            <li>Texture synthesis</li>
+            <li>Map creation for simulations and virtual environments</li>
+        </ul>
+
+        <h2>Demo</h2>
+        <p>Below are two demonstrations of the program:</p>
+        <ul>
+            <li><strong>Step-by-step visualization</strong> of how WFC collapses a grid cell by cell:</li>
+            <img src="slow_demo.gif" alt="Slow WFC demo" class="demo-gif">
+
+            <li><strong>Fast runthrough</strong> showcasing multiple generated grids in rapid succession:</li>
+            <img src="fast_demo.gif" alt="Fast WFC demo" class="demo-gif">
+        </ul>
+
+        <h2>Source Code</h2>
+        <p>You can view the full source code here:</p>
+        <p><a href="https://github.com/SohailKumar/WaveFunctionCollapse">GitHub Repository</a></p>
     </div>
 </body>
 </html>

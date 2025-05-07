@@ -13,9 +13,9 @@
 
 bool paused;
 bool spacePressedLastFrame = false;
-const int gridWidth = 10;
-const int gridHeight = 10;
-const int tileSize = 80;
+const int gridWidth = 5;
+const int gridHeight = 5;
+const int tileSize = 160;
 std::vector<std::vector<Tiles>> outputWFC;
 std::unique_ptr<WFC> wfc;
 
@@ -78,7 +78,7 @@ void processInput(GLFWwindow* window)
         randomWFC();
     }
 
-    //spacePressedLastFrame = spacePressedThisFrame; // Update for next frame
+    spacePressedLastFrame = spacePressedThisFrame; // Update for next frame
 }
 
 int initGLFW(GLFWwindow** window) {
@@ -295,7 +295,7 @@ int main(void)
                 // Create transform matrix
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(100, 100, 0));
-                model = glm::translate(model, glm::vec3(x * tileSize * 1.0, flippedY * tileSize *1.0, 0.0f));
+                model = glm::translate(model, glm::vec3(x * tileSize * 1.05, flippedY * tileSize *1.05, 0.0f));
                 model = glm::scale(model, glm::vec3(tileSize, tileSize, 1.0f));
                 glm::mat4 transform = projection * model;
 
