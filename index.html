@@ -81,7 +81,7 @@
         </ul>
 
         <h2>How It Works</h2>
-        <p>The WFC algorithm works by choosing a tile for a given position based on neighboring constraints. After each selection, the wave function (possible tiles) for adjacent cells is collapsed, propagating constraints until the entire grid is filled or a contradiction is found.</p>
+        <p>The WFC algorithm works by choosing a tile for a given position based on neighboring constraints. After each selection, the wave function (possible tiles) for adjacent cells is collapsed, propagating constraints until the entire grid is filled or a contradiction is found. If a contradiction is found, it resets the board and tries to find a new valid configuration.</p>
 
         <p>Below are the five tiles used in this project. Each tile includes sections of train tracks, and the algorithm enforces adjacency rules to ensure track continuity:</p>
         <div class="tile-gallery">
