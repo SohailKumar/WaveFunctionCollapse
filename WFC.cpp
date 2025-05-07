@@ -61,7 +61,7 @@ void WFC::Collapse(std::vector<std::vector<Tiles>> &outputWFC) {
 	int x, y;
 	bool done = false;
 	bool redo = false;
-	bool oneAtATime = false;
+	bool oneAtATime = true;
 	FindLowestEntropyCell(x, y, done);
 	if (done) {
 		std::cout << "Resetting for new WFC" << std::endl;
@@ -70,7 +70,7 @@ void WFC::Collapse(std::vector<std::vector<Tiles>> &outputWFC) {
 		outputWFC = std::vector<std::vector<Tiles>>(this->gridWidth, std::vector<Tiles>(this->gridHeight, Tiles::BLANK));
 	}
 
-	while (done == false || oneAtATime == true) {
+	while (done == false) {
 		FindLowestEntropyCell(x, y, done);
 		if (done) {
 			std::cout << "All cells collapsed" << std::endl;
@@ -87,6 +87,9 @@ void WFC::Collapse(std::vector<std::vector<Tiles>> &outputWFC) {
 			// Reset the grid and outputWFC
 			this->Reset();
 			outputWFC = std::vector<std::vector<Tiles>>(this->gridWidth, std::vector<Tiles>(this->gridHeight, Tiles::BLANK));
+		}
+		if (oneAtATime = true) {
+			break;
 		}
 	// Repeat until all cells collapsed or a cell has 0 valid tiles
 	}

@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment.glsl" />
+    <None Include="index.html" />
     <None Include="vertex.glsl" />
   </ItemGroup>
   <ItemGroup>

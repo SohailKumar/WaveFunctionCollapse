@@ -1,0 +1,27 @@
+- Checkpoint 2:
+	- (1) add another object (cone, torus, cylinder)
+	- [](1) move camera
+	
+- Checkpoint 3 (email to get credit for working)
+	- [](1) multiple light sources
+	- (1) Phong-Blinn
+	- (3) Ashikhmin-Shirley
+	- (1) Supersampling of film plane irradiance by spawning multiple rays per pixel
+	
+- Checkpoint 4
+	- (1) Implement another procedural texture (extra points for complexity like mandelbrot or brick)
+	- zzzzzzzzzzzzz(2) Implement texture mapping from image
+	- (2) Modify checkerboard to use noise to “discolor” individual tiles
+	
+- Checkpoint 5
+	- Spawn multiple reflection rays (using phong based brdf)
+	- Implement Kajia's method only considering reflection
+	
+- Checkpoint 6
+	- (1) Adjust shadow ray based on transparency of object
+	
+- zzzzzzzzzzzzCheckpoint 7
+	- zzzzzzzzzzzz(1) Modify the Reinhard operator so that you can specify what luminance is to be used as the key value.
+		¤ Constant value
+		¤ Value at a pixel
+	- zzzzzzzzzzzz(1) Choose another adaptation luminance for the Ward operator

@@ -57,6 +57,7 @@
     <None Include="fragment.glsl">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="index.html" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="trackTiles\blank.png">

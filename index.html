@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wave Function Collapse in C++ & OpenGL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        code {
+            background-color: #eee;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        pre {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 1rem;
+            overflow-x: auto;
+            border-radius: 4px;
+        }
+
+        a {
+            color: #007acc;
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wave Function Collapse - C++ & OpenGL Implementation</h1>
+
+        <p>This project is a graphical implementation of the <strong>Wave Function Collapse</strong> (WFC) algorithm using <strong>C++</strong> for logic and <strong>OpenGL</strong> (via <code>GLFW</code> and <code>GLAD</code>) for rendering. The rendering pipeline also utilizes <code>stb_image</code> for texture loading.</p>
+
+        <h2>Features</h2>
+        <ul>
+            <li>Efficient tile-based procedural generation using WFC.</li>
+            <li>Interactive OpenGL rendering using modern OpenGL (3.3+).</li>
+            <li>Support for image-based input constraints.</li>
+            <li>Real-time visualization and debugging overlays.</li>
+        </ul>
+
+        <h2>Technologies Used</h2>
+        <ul>
+            <li><strong>C++</strong> - Core algorithm implementation.</li>
+            <li><strong>OpenGL</strong> - GPU rendering.</li>
+            <li><code>GLFW</code> - Window and input management.</li>
+            <li><code>GLAD</code> - OpenGL function loader.</li>
+            <li><code>stb_image</code> - Texture loading from image files.</li>
+        </ul>
+
+        <h2>Sample Code Snippet</h2>
+        <pre><code>// Sample tile collapse logic
+void collapse(TileGrid& grid, int x, int y) {
+    auto& cell = grid[x][y];
+    if (!cell.collapsed) {
+        cell.selectRandomTile();
+        cell.collapsed = true;
+    }
+}</code></pre>
+
+        <h2>How It Works</h2>
+        <p>The WFC algorithm works by choosing a tile for a given position based on neighboring constraints. After each selection, the wave function (possible tiles) for adjacent cells is collapsed, propagating constraints until the entire grid is filled or a contradiction is found.</p>
+
+        <h2>Demo & Source Code</h2>
+        <p>You can view the full source code and demo here:</p>
+        <p><a href="#">GitHub Repository (Link to be added)</a></p>
+    </div>
+</body>
+</html>
